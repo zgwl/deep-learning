@@ -2,10 +2,16 @@
 
 ## Logistic Regression
 
-**w**: n * 1, n features
-**X**: n * m, m examples, each example contains n features
-**b**: 1 * 1
-**Z**: 1 * m, m examples. Z = dot(w.T, X) + b
-**A**: 1 * m, m examples. A = sigmoid(Z)
-**dZ**: 1 * m, m examples. dZ = A - Y
-**dw**: n * 1, n features. dw = dot(X, dZ.T) / m
+__w__: n * 1, n features
+
+__X__: n * m, m examples, each example contains n features
+
+__b__: 1 * 1
+
+__Z__: 1 * m, m examples. Z = dot(w.T, X) + b
+
+__A__: 1 * m, m examples. A = sigmoid(Z)
+
+__dZ__: 1 * m, m examples. dZ = A - Y
+
+__dw__: n * 1, n features. dw = dot(X, dZ.T) / m
