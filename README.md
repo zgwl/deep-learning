@@ -18,11 +18,11 @@ __dW__: n * 1, n features. dW = dot(X, dZ.T) / m
 
 ## Neural Network with one Hidden Layer
 
-__W[i]__: L(i) * L(i-1), L(i) indicates the number of features in i-th layer
+__W[i]__: L(i) * L(i-1), L(i) indicates the number of features(nodes) in i-th layer
 
-__A[i]__: L(i) * m, m example, L(i) number of features in i-th layer
+__A[i]__: L(i) * m, m example, L(i) number of features(nodes) in i-th layer
 
-- __A[0]__ = __X__: n * m, m example, each example contains n initial features
+- __A[0]__ = __X__: n * m, m example, each example contains n initial features(nodes)
 
 - __A[i]__ = g(Z[i]), if i > 0
 
