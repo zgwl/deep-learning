@@ -84,12 +84,10 @@ def initialize_parameters_deep(layer_dims):
 def linear_forward(A, W, b):
     """
     Implement the linear part of a layer's forward propagation.
-
     Arguments:
     A -- activations from previous layer (or input data): (size of previous layer, number of examples)
     W -- weights matrix: numpy array of shape (size of current layer, size of previous layer)
     b -- bias vector, numpy array of shape (size of the current layer, 1)
-
     Returns:
     Z -- the input of the activation function, also called pre-activation parameter 
     cache -- a python tuple containing "A", "W" and "b" ; stored for computing the backward pass efficiently
@@ -102,13 +100,11 @@ def linear_forward(A, W, b):
 def linear_activation_forward(A_prev, W, b, activation):
     """
     Implement the forward propagation for the LINEAR->ACTIVATION layer
-
     Arguments:
     A_prev -- activations from previous layer (or input data): (size of previous layer, number of examples)
     W -- weights matrix: numpy array of shape (size of current layer, size of previous layer)
     b -- bias vector, numpy array of shape (size of the current layer, 1)
     activation -- the activation to be used in this layer, stored as a text string: "sigmoid" or "relu"
-
     Returns:
     A -- the output of the activation function, also called the post-activation value 
     cache -- a python tuple containing "linear_cache" and "activation_cache";
@@ -156,11 +152,9 @@ def L_model_forward(X, parameters):
 def compute_cost(AL, Y):
     """
     Implement the cost function defined by equation (7).
-
     Arguments:
     AL -- probability vector corresponding to your label predictions, shape (1, number of examples)
     Y -- true "label" vector (for example: containing 0 if non-cat, 1 if cat), shape (1, number of examples)
-
     Returns:
     cost -- cross-entropy cost
     """    
@@ -174,11 +168,9 @@ def compute_cost(AL, Y):
 def linear_backward(dZ, cache):
     """
     Implement the linear portion of backward propagation for a single layer (layer l)
-
     Arguments:
     dZ -- Gradient of the cost with respect to the linear output (of current layer l)
     cache -- tuple of values (A_prev, W, b) coming from the forward propagation in the current layer
-
     Returns:
     dA_prev -- Gradient of the cost with respect to the activation (of the previous layer l-1), same shape as A_prev
     dW -- Gradient of the cost with respect to W (current layer l), same shape as W
@@ -282,3 +274,38 @@ def update_parameters(params, grads, learning_rate):
         parameters["b" + str(l+1)] = parameters["b" + str(l+1)] - learning_rate * grads["db" + str(l+1)]
         
     return parameters
+
+def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=False):
+    """
+    Implements a L-layer neural network: [LINEAR->RELU]*(L-1)->LINEAR->SIGMOID.
+    
+    Arguments:
+    X -- data, numpy array of shape (num_px * num_px * 3, number of examples)
+    Y -- true "label" vector (containing 0 if cat, 1 if non-cat), of shape (1, number of examples)
+    layers_dims -- list containing the input size and each layer size, of length (number of layers + 1).
+    learning_rate -- learning rate of the gradient descent update rule
+    num_iterations -- number of iterations of the optimization loop
+    print_cost -- if True, it prints the cost every 100 steps
+    
+    Returns:
+    parameters -- parameters learnt by the model. They can then be used to predict.
+    """
+
+    np.random.seed(1)
+    costs = []                         # keep track of cost    
+    parameters = initialize_parameters_deep(layers_dims)
+    
+    # Loop (gradient descent)
+    for i in range(0, num_iterations):        
+        AL, caches = L_model_forward(X, parameters)        
+        cost = compute_cost(AL, Y)        
+        grads = L_model_backward(AL, Y, caches)        
+        parameters = update_parameters(parameters, grads, learning_rate)
+                
+        # Print the cost every 100 iterations
+        if print_cost and i % 100 == 0 or i == num_iterations - 1:
+            print("Cost after iteration {}: {}".format(i, np.squeeze(cost)))
+        if i % 100 == 0 or i == num_iterations:
+            costs.append(cost)
+    
+    return parameters, costs
